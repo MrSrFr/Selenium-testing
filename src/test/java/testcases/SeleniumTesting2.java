@@ -13,9 +13,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import org.testng.annotations.Test;
 
 public class SeleniumTesting2 {
     public static void main(String[] args) {
+        initializeTest();
+    }
+
+    public static void initializeTest() {
         Random random = new Random();
 
         //testing in chrome
@@ -26,12 +31,28 @@ public class SeleniumTesting2 {
         driver.manage().window().maximize();
         driver.get("http://demo.guru99.com/insurance/v1/index.php");
 
+        testFirstPart(driver, random);
+
+        testSecondPart(driver);
+
+        testThirdPart(driver, random);
+
+        testFourthPart(driver, random);
+
+        testScreenshot(driver);
+    }
+
+    @Test(groups = "test-group1")
+    public static void testFirstPart(ChromeDriver driver, Random random) {
         //find register button and click
         WebElement registerButton = driver.findElement(By.xpath("//html//body//div[3]//a"));
         registerButton.click();
 
         handleTitleDropDown(driver, random);
+    }
 
+    @Test(groups = "test-group2")
+    public static void testSecondPart(ChromeDriver driver) {
         WebElement firstName = driver.findElementById("user_firstname");
         WebElement surName = driver.findElementById("user_surname");
         WebElement phoneNbr = driver.findElementById("user_phone");
@@ -41,42 +62,10 @@ public class SeleniumTesting2 {
         surName.sendKeys("Fesler");
         phoneNbr.sendKeys("660-332-6734");
         //^send information
-
-        handleDateOfBirthDropDowns(driver, random);
-
-        WebElement radioButton = driver.findElementById("licencetype_t");
-        Select radioOptions = new Select(radioButton);
-        List<WebElement> allRadioOptions = radioOptions.getOptions(); //put all options of dropdown into list
-        WebElement randomRadioSelection = allRadioOptions.get(random.nextInt(allRadioOptions.size()));
-        radioOptions.selectByVisibleText(randomRadioSelection.getText()); //select random item from list
-
-
-        Screenshot screenshot = new AShot().takeScreenshot(driver); //take screenshot of page
-        final BufferedImage image = screenshot.getImage(); //buffer the image to make sure completed
-
-        try {
-            ImageIO.write(image, "jpg", new File(".\\screenshot\\fullimage.jpg")); //write image to path
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    private static void handleTitleDropDown(ChromeDriver driver, Random random) {
-        //find title element and input
-        WebElement titleElement = driver.findElement(By.xpath("//html//body//div[3]//form//div[2]//select"));
-        Select titleDropDown = new Select(titleElement);
-        List<WebElement> allTitleOptions = titleDropDown.getOptions(); //put all options of dropdown into list
-
-        WebElement randomTitleSelection = allTitleOptions.get(random.nextInt(allTitleOptions.size()));
-        //^picks random option out of list for testing purposes
-
-        titleDropDown.selectByVisibleText(randomTitleSelection.getText()); //select random item from list
-        for (WebElement allTitleOption : allTitleOptions) {
-            System.out.println(allTitleOption.getText()); //display all list option in list for debug
-        }
-    }
-
-    private static void handleDateOfBirthDropDowns(ChromeDriver driver, Random random) {
+    @Test(groups = "test-group3")
+    public static void testThirdPart(ChromeDriver driver, Random random) {
         //find year element and input
         WebElement yearElement = driver.findElement(By.id("user_dateofbirth_1i"));
         Select yearDropDown = new Select(yearElement);
@@ -117,4 +106,39 @@ public class SeleniumTesting2 {
         }
     }
 
+    @Test(groups = "test-group4")
+    public static void testFourthPart(ChromeDriver driver, Random random) {
+        WebElement radioButton = driver.findElementById("licencetype_t");
+        Select radioOptions = new Select(radioButton);
+        List<WebElement> allRadioOptions = radioOptions.getOptions(); //put all options of dropdown into list
+        WebElement randomRadioSelection = allRadioOptions.get(random.nextInt(allRadioOptions.size()));
+        radioOptions.selectByVisibleText(randomRadioSelection.getText()); //select random item from list
+    }
+
+    public static void handleTitleDropDown(ChromeDriver driver, Random random) {
+        //find title element and input
+        WebElement titleElement = driver.findElement(By.xpath("//html//body//div[3]//form//div[2]//select"));
+        Select titleDropDown = new Select(titleElement);
+        List<WebElement> allTitleOptions = titleDropDown.getOptions(); //put all options of dropdown into list
+
+        WebElement randomTitleSelection = allTitleOptions.get(random.nextInt(allTitleOptions.size()));
+        //^picks random option out of list for testing purposes
+
+        titleDropDown.selectByVisibleText(randomTitleSelection.getText()); //select random item from list
+        for (WebElement allTitleOption : allTitleOptions) {
+            System.out.println(allTitleOption.getText()); //display all list option in list for debug
+        }
+    }
+
+    @Test(groups = "test-group5")
+    public static void testScreenshot(ChromeDriver driver) {
+        Screenshot screenshot = new AShot().takeScreenshot(driver); //take screenshot of page
+        final BufferedImage image = screenshot.getImage(); //buffer the image to make sure completed
+
+        try {
+            ImageIO.write(image, "jpg", new File(".\\screenshot\\fullimage.jpg")); //write image to path
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

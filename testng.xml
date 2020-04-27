@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite" verbose="1" >
+    <test name="Testing test">
+        <groups>
+            <run>
+                <include name="testFirstPart"/>
+                <include name="testSecondPart"/>
+                <include name="testThirdPart"/>
+                <include name="testFourthPart"/>
+                <include name="testScreenshot"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testcases.SeleniumTesting2"></class>
+        </classes>
+    </test>
+</suite>
